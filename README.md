@@ -1,3 +1,29 @@
+# xfdesktop-live-wallpaper
+
+A fork of xfdesktop with modifications to support live/animated wallpapers on XFCE.
+
+## What's Changed
+
+| Change | Why |
+|--------|-----|
+| Window type → `NORMAL` | Allows stacking control (live wallpaper renders below) |
+| Window title → `xfceliveDesktop` | Easy detection by wallpaper engines via `wmctrl` |
+| RGBA visual enabled | Transparency support |
+| `keep_below` disabled | Window can be positioned above live wallpaper |
+
+Desktop icons and right-click menus still work normally.
+
+## Usage
+
+1. Build and install this patched xfdesktop
+2. Set background to Transparent: `xfconf-query -c xfce4-desktop -p /backdrop/.../color-style -s 3`
+3. Set image style to None: `xfconf-query -c xfce4-desktop -p /backdrop/.../image-style -s 0`
+4. Run your live wallpaper engine
+
+> **Note:** [live-dither-bg](https://github.com/arfelious/live-dither-bg) handles steps 2-3 itself.
+
+---
+
 [![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://gitlab.xfce.org/xfce/xfdesktop/-/blob/master/COPYING)
 
 # xfdesktop
