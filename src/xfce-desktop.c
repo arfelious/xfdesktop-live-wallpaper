@@ -553,14 +553,31 @@ xfce_desktop_constructed(GObject *obj)
     G_OBJECT_CLASS(xfce_desktop_parent_class)->constructed(obj);
 
     gtk_window_set_screen(GTK_WINDOW(desktop), desktop->gscreen);
-    gtk_window_set_type_hint(GTK_WINDOW(desktop), GDK_WINDOW_TYPE_HINT_DESKTOP);
+    /* Use NORMAL window type to allow proper stacking */
+    gtk_window_set_type_hint(GTK_WINDOW(desktop), GDK_WINDOW_TYPE_HINT_NORMAL); 
+    gtk_window_set_decorated(GTK_WINDOW(desktop), FALSE); /* Hide title bar/borders */ 
+    
+    /* Enable RGBA visual for transparency support */
+    GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(desktop));
+    GdkVisual *visual = gdk_screen_get_rgba_visual(screen);
+    if (visual != NULL) {
+        gtk_widget_set_visual(GTK_WIDGET(desktop), visual);
+    }
+    gtk_widget_set_app_paintable(GTK_WIDGET(desktop), TRUE);
     /* Accept focus is needed for the menu pop up either by the menu key on
      * the keyboard or Shift+F10. */
     gtk_window_set_accept_focus(GTK_WINDOW(desktop), TRUE);
     /* Can focus is needed for the gtk_grab_add/remove commands */
     gtk_widget_set_can_focus(GTK_WIDGET(desktop), TRUE);
     gtk_window_set_resizable(GTK_WINDOW(desktop), FALSE);
-    gtk_window_set_title(GTK_WINDOW(desktop), _("Desktop"));
+    /* Live wallpaper patch: identifiable title for wmctrl */
+    gtk_window_set_title(GTK_WINDOW(desktop), _("xfceliveDesktop"));
+    
+    /* Live wallpaper patch: skip taskbar/pager, make sticky, allow stacking */
+    gtk_window_set_skip_taskbar_hint(GTK_WINDOW(desktop), TRUE);
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(desktop), TRUE);
+    gtk_window_stick(GTK_WINDOW(desktop));
+    gtk_window_set_keep_below(GTK_WINDOW(desktop), FALSE);
     gtk_window_set_decorated(GTK_WINDOW(desktop), FALSE);
 
 #ifdef ENABLE_WAYLAND
