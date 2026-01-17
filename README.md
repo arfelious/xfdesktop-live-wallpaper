@@ -20,7 +20,7 @@ Desktop icons and right-click menus still work normally.
 3. Set image style to None: `xfconf-query -c xfce4-desktop -p /backdrop/.../image-style -s 0`
 4. Run your live wallpaper engine
 
-> **Note:** [live-dither-bg](https://github.com/arfelious/live-dither-bg) handles steps 2-3 itself.
+> **Note:** [live-dither-wp](https://github.com/arfelious/live-dither-wp) handles steps 2-3 itself.
 
 ---
 
